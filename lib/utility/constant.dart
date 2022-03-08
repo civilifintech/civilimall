@@ -19,6 +19,7 @@ class Constant {
   static Color primary = Color(0xffba0c00);
   static Color primaryLight = Color(0xfff44e2e);
   static Color primaryDark = Color(0xff820000);
+  static Color white = Color(0xffffffff);
 
   // Style
   TextStyle h1Style() => TextStyle(
