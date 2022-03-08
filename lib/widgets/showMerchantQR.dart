@@ -64,26 +64,25 @@ const String kTransparentBackgroundPage = '''
   </html>
 ''';
 
-class showMall extends StatefulWidget {
-  const showMall({Key? key}) : super(key: key);
+class showMerchantQR extends StatefulWidget {
+  const showMerchantQR({Key? key}) : super(key: key);
 
   @override
-  showMallState createState() => showMallState();
+  showMerchantQRState createState() => showMerchantQRState();
 }
 
-class showMallState extends State<showMall> {
+class showMerchantQRState extends State<showMerchantQR> {
   final Completer<WebViewController> _controller =
       Completer<WebViewController>();
   String? token;
   @override
   void initState() {
+    getToken();
     super.initState();
 
     if (Platform.isAndroid) {
       WebView.platform = SurfaceAndroidWebView();
     }
-
-    getToken();
   }
 
   @override
@@ -102,7 +101,9 @@ class showMallState extends State<showMall> {
       // to allow calling Scaffold.of(context) so we can show a snackbar.
       body: Builder(builder: (BuildContext context) {
         return WebView(
-          initialUrl: 'https://civilimall.com/?token=' + token!,
+          initialUrl:
+              'https://member.civilifintech.com/merchant_qrcode?token=' +
+                  token!,
           javascriptMode: JavascriptMode.unrestricted,
           onWebViewCreated: (WebViewController webViewController) {
             _controller.complete(webViewController);

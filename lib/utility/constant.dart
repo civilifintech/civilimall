@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Constant {
-  // General
+// General
   static String appName = "CIVILI MALL";
 
   // Route

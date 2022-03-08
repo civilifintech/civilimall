@@ -3,6 +3,9 @@ import 'package:civilimall/utility/constant.dart';
 import 'package:civilimall/widgets/showMall.dart';
 import 'package:flutter/material.dart';
 
+import '../widgets/showMerchantQR.dart';
+import '../widgets/showTopup.dart';
+
 class Mall extends StatefulWidget {
   const Mall({Key? key}) : super(key: key);
 
@@ -30,14 +33,10 @@ class _MallState extends State<Mall> {
     ),
   ];
   static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 0: Voucher',
-    ),
+    showTopup(),
     ScanQR(),
     showMall(),
-    Text(
-      'Index 3: Gen QR',
-    ),
+    showMerchantQR(),
     Text(
       'Index 4: Home',
     ),
@@ -52,11 +51,11 @@ class _MallState extends State<Mall> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: Color(0xffba0c00),
-        title: _appbarwidgetOptions.elementAt(_selectedIndex),
-      ),
+      // appBar: AppBar(
+      //   automaticallyImplyLeading: false,
+      //   backgroundColor: Color(0xffba0c00),
+      //   title: _appbarwidgetOptions.elementAt(_selectedIndex),
+      // ),
       body: SafeArea(
         child: Container(
           child: _widgetOptions.elementAt(_selectedIndex),

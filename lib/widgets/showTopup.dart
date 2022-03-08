@@ -64,14 +64,14 @@ const String kTransparentBackgroundPage = '''
   </html>
 ''';
 
-class showMall extends StatefulWidget {
-  const showMall({Key? key}) : super(key: key);
+class showTopup extends StatefulWidget {
+  const showTopup({Key? key}) : super(key: key);
 
   @override
-  showMallState createState() => showMallState();
+  showTopupState createState() => showTopupState();
 }
 
-class showMallState extends State<showMall> {
+class showTopupState extends State<showTopup> {
   final Completer<WebViewController> _controller =
       Completer<WebViewController>();
   String? token;
@@ -102,7 +102,8 @@ class showMallState extends State<showMall> {
       // to allow calling Scaffold.of(context) so we can show a snackbar.
       body: Builder(builder: (BuildContext context) {
         return WebView(
-          initialUrl: 'https://civilimall.com/?token=' + token!,
+          initialUrl:
+              'https://member.civilifintech.com/topup_gb?token=' + token!,
           javascriptMode: JavascriptMode.unrestricted,
           onWebViewCreated: (WebViewController webViewController) {
             _controller.complete(webViewController);

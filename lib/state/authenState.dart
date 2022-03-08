@@ -1,7 +1,13 @@
+import 'dart:async';
+import 'dart:convert';
+import 'package:flutter/material.dart';
+
+import 'package:http/http.dart' as http;
 import 'package:civilimall/utility/constant.dart';
 import 'package:civilimall/widgets/showImage.dart';
 import 'package:civilimall/widgets/showText.dart';
-import 'package:flutter/material.dart';
+import 'package:civilimall/utility/dialog.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Authen extends StatefulWidget {
   const Authen({Key? key}) : super(key: key);
@@ -11,6 +17,9 @@ class Authen extends StatefulWidget {
 }
 
 class _AuthenState extends State<Authen> {
+  TextEditingController nameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     double screenSize = MediaQuery.of(context).size.width;
@@ -50,6 +59,7 @@ class _AuthenState extends State<Authen> {
                       height: 50,
                       margin: EdgeInsets.only(left: 40, right: 40),
                       child: TextField(
+                        controller: nameController,
                         style: TextStyle(fontSize: 16, color: Colors.black),
                         decoration: InputDecoration(
                           hintText: "MemberCode",
@@ -72,6 +82,7 @@ class _AuthenState extends State<Authen> {
                       height: 50,
                       margin: EdgeInsets.only(left: 40, right: 40),
                       child: TextField(
+                        controller: passwordController,
                         obscureText: true,
                         style: TextStyle(fontSize: 16, color: Colors.black),
                         decoration: InputDecoration(
@@ -106,10 +117,46 @@ class _AuthenState extends State<Authen> {
                       width: double.infinity,
                       margin: EdgeInsets.only(left: 40, right: 40),
                       child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.restorablePushNamedAndRemoveUntil(
-                              context, Constant.routeMall, (route) => false);
-                          // context, Constant.routeScanQR, (route) => false);
+                        onPressed: () async {
+                          //print(nameController.text);
+                          //print(passwordController.text);
+
+                          final response = await http.post(
+                            Uri.parse(
+                                "https://ws.civilifintech.com/api/v1/memberAuth"),
+                            headers: <String, String>{
+                              'Content-Type': 'application/json; charset=UTF-8',
+                            },
+                            body: jsonEncode(<String, String>{
+                              'member_code': nameController.text,
+                              'password': passwordController.text
+                            }),
+                          );
+                          if (response.statusCode == 200) {
+                            //print(response.body);
+                            final parsed = jsonDecode(response.body);
+
+                            if (parsed['status_code'] == "100") {
+                              final prefs =
+                                  await SharedPreferences.getInstance();
+                              await prefs.setString(
+                                  'member_code', parsed['member_code']);
+                              await prefs.setString(
+                                  'display_name', parsed['display_name']);
+                              await prefs.setString('token', parsed['token']);
+                              Navigator.restorablePushNamedAndRemoveUntil(
+                                  context,
+                                  Constant.routeMall,
+                                  (route) => false);
+                            } else {
+                              MyDialog().normalDialog(
+                                  context, "Alert", parsed['response_message']);
+                            }
+                          } else {
+                            // If that call was not successful, throw an error.
+                            MyDialog()
+                                .normalDialog(context, "Alert", "API Error");
+                          }
                         },
                         style: ElevatedButton.styleFrom(
                           primary: Constant.primary,
