@@ -9,6 +9,7 @@ class Constant {
   static String routeIntro = '/introState';
   static String routeMall = '/mallState';
   static String routeScanQR = '/scanQRState';
+  static String routeForm = '/scanFormState';
 
   // Image
   static String logo = "assets/images/cvl_logo.png";

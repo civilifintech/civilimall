@@ -45,7 +45,16 @@ class _ScanQRState extends State<ScanQR> {
                     Text(
                         'Barcode Type: ${describeEnum(result!.format)}   Data: ${result!.code}')
                   else
-                    const Text('Scan a code'),
+                    TextButton(
+                      child: Text('POP'),
+                      onPressed: () {
+                        Navigator.of(context).pushNamed(
+                          Constant.routeForm,
+                          arguments: {"data": "abcd"},
+                        );
+                      },
+                    ),
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
